@@ -22,10 +22,8 @@ double getValue();
  */
 int main(void)
 {
-    double a;
-    double x;
-    a=1.36;
-    x=getValue();
+    const double a=1.36;
+    double x=getValue();
     printf("y = %.7f", getY(x,a));
     return 0;
 }
