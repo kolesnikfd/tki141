@@ -55,7 +55,7 @@ int factorial(const int n);
  * @param k число-сравнение для делителей
  * @return количество найденных делителей
  */
-int countDivK(int n, const int k);
+int countDivK(const int n, const int k);
 
 /**
  * @brief Точка входа в программу
@@ -151,7 +151,7 @@ int factorial(const int n)
     return result;
 }
 
-int countDivK(int n, const int k)
+int countDivK(const int n, const int k)
 {
     int count = 0;
     for (int i = 1; i * i <= n; i++)
@@ -170,3 +170,4 @@ int countDivK(int n, const int k)
     }
     return count;
 }
+
