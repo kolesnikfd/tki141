@@ -49,7 +49,7 @@ int main()
 	printf("Enter step: ");
 	double step = getValue();
 	checkStep(step);
-	for (double x = start; x < end + DBL_EPSILON; x = x + step)
+	for (double x = start; x < end; x = x + step)
 	{
 		if (defineOOF(x))
 		{
@@ -103,3 +103,4 @@ int getSum3()
 	}
 	return sum;
 }
+
