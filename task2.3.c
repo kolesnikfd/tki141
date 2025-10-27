@@ -61,19 +61,7 @@ int main(void)
 
 void getAccess (const double sizeA, const double sizeB, const double size11, const double size12, const double size21, const double size22)
 {
-    if ( (size11+size21 <= sizeA) && (size12 <= sizeB) && (size22 <=sizeB) )
-    {
-        printf("Yes, you can");
-    }
-    else if ( (size11+size22 <= sizeA) && (size12 <= sizeB) && (size21 <=sizeB) )
-    {
-        printf("Yes, you can");
-    }
-    else if ( (size12+size21 <= sizeA) && (size11 <= sizeB) && (size22 <=sizeB) )
-    {
-        printf("Yes, you can");
-    }
-    else if ( (size12+size22 <= sizeA) && (size11 <= sizeB) && (size21 <=sizeB) )
+    if ( ((size11+size21 <= sizeA) && (size12 <= sizeB) && (size22 <=sizeB)) || ((size11+size22 <= sizeA) && (size12 <= sizeB) && (size21 <=sizeB)) || ((size12+size21 <= sizeA) && (size11 <= sizeB) && (size22 <=sizeB)) || ((size12+size22 <= sizeA) && (size11 <= sizeB) && (size21 <=sizeB)) )
     {
         printf("Yes, you can");
     }
