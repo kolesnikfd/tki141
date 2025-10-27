@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 /**
- * @brief Рассчитывает функцию В по заданной формуле
+ * @brief Рассчитывает функцию A по заданной формуле
  * @param x - значение параметра x
  * @param y - значение параметра y
  * @param z - значение параметра z
@@ -12,7 +12,7 @@
 double getA(const double x, const double y, const double z);
 
 /**
- * @brief Рассчитывает функцию A по заданной формуле
+ * @brief Рассчитывает функцию B по заданной формуле
  * @param x - значение параметра x
  * @param y - значение параметра y
  * @param z - значение параметра z
@@ -42,4 +42,5 @@ double getA(const double x, const double y, const double z)
 double getB(const double x, const double y, const double z)
 {
     return exp(2 * x) * log(z + x) - pow(y, 3 * x) * log(y - x);
+
 }
