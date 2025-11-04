@@ -27,6 +27,12 @@ double getAbsSum (const double a, const double b, const double c);
 double getValue();
 
 /**
+@brief CountNegatives - количество отрицательных
+@brief AbsoluteSum - абсолютная сумма
+*/
+enum {CountNegatives, AbsoluteSum};
+
+/**
  * @brief точка входа в программу
  * @return 0, если программа выполнена корректно 
  */
@@ -35,8 +41,22 @@ int main(void)
     double a = getValue();
     double b = getValue();
     double c = getValue();
-    printf("Negatives = %.0f\n", countNegative(a, b, c));
-    printf("Absolute sum = %f", getAbsSum(a, b, c));
+
+    printf("select the required calculation: %d - count of negative, %d - absolute sum\n", CountNegatives, AbsoluteSum);
+    int choice = (int) getValue();
+    switch (choice) 
+    {
+    case CountNegatives:
+        printf("Negatives = %.0f\n", countNegative(a, b, c));
+        break;
+    case AbsoluteSum: 
+        printf("Absolute sum = %f", getAbsSum(a, b, c));
+        break;
+    default:
+        printf("wrong choice");
+        abort();
+    }
+
     return 0;
 }
 
