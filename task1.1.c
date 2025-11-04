@@ -41,6 +41,7 @@ double getA(const double x, const double y, const double z)
 
 double getB(const double x, const double y, const double z)
 {
-    return exp(2 * x) * log(z + x) - pow(y, 3 * x) * log(y - x);
+    return exp(2.0 * x) * log(z + x) - pow(y, 3 * x) * log(y - x);
 
 }
+
