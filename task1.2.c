@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+
 /**
  * @brief Рассчитывает значение пути по скорости судна, скорости течения и времени
  * @param speedShip - значение скорости судна
@@ -21,13 +22,13 @@ double getValue();
  */
 int main(void)
 {
-    printf("Enter ship speed(km/h):\n");
+    printf("Enter ship speed(km/h)\n");
     double speedShip = getValue();
-    printf("Enter flow speed(km/h):\n");
+    printf("Enter flow speed(km/h)\n");
     double speedFlow = getValue();
-    printf("Enter time(h):\n");
+    printf("Enter time(h)\n");
     double Time = getValue();
-    printf("Path = %.10f m", getPath(speedShip, speedFlow, Time));
+    printf("Path = %.10g m", getPath(speedShip, speedFlow, Time));
     return 0;
 }
 
@@ -42,7 +43,7 @@ double getValue()
     if (!scanf("%lf", &value))
     {
         printf("Error\n");
-        abort();
+        exit(0);
     }
     return value;
 }
