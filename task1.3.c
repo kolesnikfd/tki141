@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 /**
  * @brief Рассчитывает количество теплоты, необходиоме для нагрева стали массой m c температуры t0  до температуры t
  * @param m - значение массы
@@ -12,7 +13,7 @@ double getHeat(const double m, const double t0, const double t);
  * @brief сичтывает значение, введенное с клавиатуры с проверкой ввода
  * @return считанное значение
  */
-double getValue();
+double getValue(void);
 
 /**
  * @brief точка входа в программу
@@ -26,7 +27,7 @@ int main(void)
     double t0 = getValue();
     printf("Enter t(sec):\n");
     double t = getValue();
-    printf("Q = %.10f J", getHeat(m, t0, t));
+    printf("Q = %.10g J", getHeat(m, t0, t));
     return 0;
 }
 
@@ -35,13 +36,13 @@ double getHeat(const double m, const double t0, const double t)
     return (500*m*(t-t0));
 }
 
-double getValue()
+double getValue(void)
 {
     double value=0;
-    if (!scanf("%lf", &value))
+    if (!scanf("%lg", &value))
     {
         printf("Error\n");
-        abort();
+        exit(0);
     }
     return value;
 }
