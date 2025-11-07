@@ -8,7 +8,7 @@
  * @brief считывает значение, введенное с клавиатуры с проверкой ввода
  * @return считанное значение
  */
-double getValue();
+double getValue(void);
 
 /**
  * @brief проверяет,что переменная положительная
@@ -36,20 +36,20 @@ int main()
 	printf("Enter step: ");
 	double step = getValue();
 	checkStep(step);
-	for (double x = start; x < end + DBL_EPSILON; x = x + step)
+	for (double x = start; end - x > DBL_EPSILON; x = x + step)
 	{
-		printf("x = %.2lf, y = %.4lf\n", x, getY(x));
+		printf("x = %.2lg, y = %.4lg\n", x, getY(x));
 	}
 	return 0;
 }
 
-double getValue()
+double getValue(void)
 {
 	double value = 0;
 	if (!scanf_s("%lf", &value))
 	{
 		printf("Error\n");
-		abort();
+		exit(0);
 	}
 	return value;
 }
@@ -59,7 +59,7 @@ void checkStep(const double step)
 	if (step <= DBL_EPSILON)
 	{
 		printf("Error, step must be positive\n");
-		abort();
+		exit(0);
 	}
 }
 
