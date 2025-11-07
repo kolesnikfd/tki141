@@ -14,7 +14,7 @@ double getPath(const double speedShip, const double speedFlow, const double Time
  * @brief сичтывает значение, введенное с клавиатуры с проверкой ввода
  * @return считанное значение
  */
-double getValue();
+double getValue(void);
 
 /**
  * @brief Точка входа в программу
@@ -37,7 +37,7 @@ double getPath(const double speedShip, const double speedFlow, const double Time
     return ((speedShip + speedFlow)*Time);
 }
 
-double getValue()
+double getValue(void)
 {
     double value=0;
     if (!scanf("%lf", &value))
@@ -47,4 +47,7 @@ double getValue()
     }
     return value;
 }
+    return value;
+}
+
 
