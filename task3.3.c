@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
-#include <stdbool.h>
 #include <math.h>
 
 /**
@@ -24,6 +23,28 @@ void checkStep(const double step);
 double getY(const double x);
 
 /**
+ * @brief рассчитывает коэффициент рекуррентного выражения
+ * @param n текущий индекс
+ * @param x текущее значение x
+ * @return рассчитанное значение коэффициента
+ */
+double getRecurent(const int n, const double x);
+
+/**
+ * @brief рассчитывает сумму членов последовательности с точностью eps
+ * @param eps - заданная точность
+ * @return рассчитанное значение
+ */
+double getSumE(const double eps, const double x);
+
+/**
+ * @brief рассчитывает факториал числа
+ * @param n - заданное число
+ * @return рассчитанное значение
+ */
+int factorial(const int n);
+
+/**
  * @brief точка входа в программу
  * @return 0, если программа выполнена корректно
  */
@@ -36,9 +57,10 @@ int main()
 	printf("Enter step: ");
 	double step = getValue();
 	checkStep(step);
+	const double eps = pow(20, -4);
 	for (double x = start; end - x > DBL_EPSILON; x = x + step)
 	{
-		printf("x = %.2lg, y = %.4lg\n", x, getY(x));
+		printf("x = %lf, y = %lf, Sum of numbers of the sequence with precision %lf = %lf\n", x, getY(x), eps, getSumE(eps,x));
 	}
 	return 0;
 }
@@ -65,5 +87,35 @@ void checkStep(const double step)
 
 double getY(const double x)
 {
-	return pow(3,x);
+	return ( (exp(x)-exp(-x))/2 );
 }
+
+double getRecurent(const int n, const double x)
+{
+    return ( (pow(x, 2 * n + 1))/(factorial(2 * n + 1)) );
+}
+
+double getSumE(const double eps, const double x)
+{
+    double current = getRecurent(0,x);
+    double result = 0;
+    for (int n = 1; fabs(current) > eps; n++)
+    {
+        result += current;
+        current *= getRecurent(n, x);
+    }
+    return result;
+}
+
+int factorial(const int n)
+{
+    int result = 1;
+    for (int i = 1; i<=n; i++)
+    {
+        result*=i;
+    }
+    return result;
+}
+
+
+
