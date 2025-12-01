@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 
 /**
@@ -40,7 +39,7 @@ double getRecurent(const int i);
  * @brief проверяет, что число положительное
  * @param value - проверяемое значение
  */
-void checkPositive(const double value);
+void checkPositive(const int value);
 
 /**
  * @brief рассчитывает факториал числа
@@ -65,19 +64,20 @@ int main()
 {
     printf("Enter n: ");
     int n = getValue();
-    checkPositive(n);
-    printf("Sum of %d in the sequence = %.4lf\n", n, getSumN(n));
+    printf("Sum of first %d terms = %.40lf\n", n, getSumN(n));
+    
     printf("Enter e: ");
     double e = getDouble();
-    checkPositive(e);
-    printf("Sum of numbers of the sequence with precision %lf = %.4lf\n", e, getSumE(e));
-    printf("Enter x:");
+    checkNonNegative(e);
+    printf("Sum of terms with absolute value >= %.20lf = %.40lf\n", e, getSumE(e));
+    
+    printf("Enter x: ");
     int x = getValue();
     checkPositive(x);
-    printf("Enter k:");
+    printf("Enter k: ");
     int k = getValue();
-    checkPositive(k);
-    printf("The number of divisors of the number %d that are greater than %d = %d", x, k, countDivK(x,k));
+    checkNonNegative(k);
+    printf("The number of divisors of %d that are greater than %d = %d\n", x, k, countDivK(x, k));
     return 0;
 }
 
@@ -105,48 +105,57 @@ double getDouble()
 
 double getSumN(const int n)
 {
-    double current = -1;
-    double result = current;
-    for (int i = 0; i < n; i++ )
+    if (n <= 0) return 0;
+    double result = 0;
+    double current = 0;
+    double factorial_part = 1.0; // 0! = 1
+    for (int k = 0; k < n; k++)
     {
-        current *= getRecurent(i);
+        if (k == 0)
+        {
+            current = 1.0;
+        }
+        else
+        {
+            current *= (-1.0) * (1 + k) / (k * k);
+        }
         result += current;
     }
     return result;
 }
 
-double getRecurent(const int i)
+void checkPositive(const int value)
 {
-    return (pow(-1, i)*(1+i))/(factorial(i));
+    if (value <= 0)
+    {
+        printf("Error: value must be positive\n");
+        exit(1);
+    }
 }
 
-void checkPositive(const double value)
+void checkNonNegative(const double value)
 {
-    if (!value > 0)
+    if (value < 0)
     {
-        printf("Error\n");
+        printf("Error: value must be non-negative\n");
         exit(1);
     }
 }
 
 double getSumE(const double e)
 {
-    double current = -1;
     double result = 0;
-    for (int i = 1; fabs(current) > e; i++)
+    double current = 0;
+    double factorial_part = 1.0;
+    int k = 0;
+    current = 1.0;
+    
+    while (fabs(current) >= e)
     {
         result += current;
-        current*=getRecurent(i);
-    }
-    return result;
-}
-
-int factorial(const int n)
-{
-    int result = 1;
-    for (int i = 1; i<=n; i++)
-    {
-        result*=i;
+        k++;
+        current *= (-1.0) * (1 + k) / (k * k);
+        if (k > 1000) break;
     }
     return result;
 }
@@ -158,16 +167,9 @@ int countDivK(const int n, const int k)
     {
         if (n % i == 0)
         {
-            if (i > k)
-            {
-                count++;
-            }
-            if (i != n / i && n / i > k)
-            {
-                count++;
-            }
+            if (i > k) count++;
+            if (i != n / i && n / i > k) count++;
         }
     }
     return count;
 }
-
