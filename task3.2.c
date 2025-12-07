@@ -42,13 +42,6 @@ double getRecurent(const int i);
 void checkPositive(const int value);
 
 /**
- * @brief рассчитывает факториал числа
- * @param n - заданное число
- * @return рассчитанное значение
- */
-int factorial(const int n);
-
-/**
  * @brief ищет количество делителей числа n, которые больше k
  * @param n число
  * @param k число-сравнение для делителей
@@ -108,7 +101,7 @@ double getSumN(const int n)
     if (n <= 0) return 0;
     double result = 0;
     double current = 0;
-    double factorial_part = 1.0; // 0! = 1
+    double factorial_part = 1.0;
     for (int k = 0; k < n; k++)
     {
         if (k == 0)
@@ -173,3 +166,4 @@ int countDivK(const int n, const int k)
     }
     return count;
 }
+
