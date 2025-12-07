@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <float.h>
 #include <math.h>
 
@@ -23,26 +22,11 @@ void checkStep(const double step);
 double getY(const double x);
 
 /**
- * @brief рассчитывает коэффициент рекуррентного выражения
- * @param n текущий индекс
- * @param x текущее значение x
- * @return рассчитанное значение коэффициента
- */
-double getRecurent(const int n, const double x);
-
-/**
  * @brief рассчитывает сумму членов последовательности с точностью eps
  * @param eps - заданная точность
  * @return рассчитанное значение
  */
 double getSumE(const double eps, const double x);
-
-/**
- * @brief рассчитывает факториал числа
- * @param n - заданное число
- * @return рассчитанное значение
- */
-int factorial(const int n);
 
 /**
  * @brief точка входа в программу
@@ -58,9 +42,9 @@ int main()
 	double step = getValue();
 	checkStep(step);
 	const double eps = pow(20, -4);
-	for (double x = start; end - x > DBL_EPSILON; x = x + step)
+	for (double x = start; end - x + step> DBL_EPSILON; x = x + step)
 	{
-		printf("x = %lf, y = %lf, Sum of numbers of the sequence with precision %lf = %lf\n", x, getY(x), eps, getSumE(eps,x));
+		printf("x = %lf, y = %.10lf, Sum of numbers of the sequence with precision %.8lf = %.8lf\n", x, getY(x), eps, getSumE(eps,x));
 	}
 	return 0;
 }
@@ -71,7 +55,7 @@ double getValue(void)
 	if (!scanf_s("%lf", &value))
 	{
 		printf("Error\n");
-		exit(0);
+		exit(1);
 	}
 	return value;
 }
@@ -81,38 +65,27 @@ void checkStep(const double step)
 	if (step <= DBL_EPSILON)
 	{
 		printf("Error, step must be positive\n");
-		exit(0);
+		exit(1);
 	}
 }
 
 double getY(const double x)
 {
-	return ( (exp(x)-exp(-x))/2 );
-}
-
-double getRecurent(const int n, const double x)
-{
-    return ( (pow(x, 2 * n + 1))/(factorial(2 * n + 1)) );
+	return ( (exp(x) - exp(-x)) / 2.0 );
 }
 
 double getSumE(const double eps, const double x)
 {
-    double current = getRecurent(0,x);
-    double result = 0;
-    for (int n = 1; fabs(current) > eps; n++)
+    double current = x;
+    double result = 0.0;
+    double fact_part = 1;
+    double k = 0;
+    while ( fabs(current) > eps )
     {
-        result += current;
-        current *= getRecurent(n, x);
-    }
-    return result;
-}
-
-int factorial(const int n)
-{
-    int result = 1;
-    for (int i = 1; i<=n; i++)
-    {
-        result*=i;
+        result = result + current;
+        k++;
+        fact_part = fact_part * 2 * k * ( 2 * k + 1);
+        current = (pow(x, 2 * k + 1)) / fact_part;
     }
     return result;
 }
