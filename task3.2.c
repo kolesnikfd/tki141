@@ -28,13 +28,6 @@ double getSumN(const int n);
  */
 double getSumE(const double e);
 
-/**
- * @brief рассчитывает коэффициент рекуррентного выражения
- * @param i текущий индекс
- * @return рассчитанное значение коэффициента
- */
-double getRecurent(const int i);
-
 /** 
  * @brief проверяет, что число положительное
  * @param value - проверяемое значение
@@ -155,3 +148,4 @@ double getSumN(const int n)
     }
     return result;
 }
+
