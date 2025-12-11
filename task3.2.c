@@ -119,7 +119,6 @@ double getSumE(const double e)
     }
     return result;
 }
-    return result;
-}
+
 
 
