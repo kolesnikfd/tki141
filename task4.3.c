@@ -4,7 +4,7 @@
 #define scanf_s scanf
 
 /**
- * @brief Считывает значение введенное с клавиатуры с проверкой ввода
+ * @brief Считывает значение, введенное с клавиатуры с проверкой ввода
  * @return Считанное значение
  */
 int Value();
@@ -14,7 +14,7 @@ int Value();
  * @param message сообщение пользователю
  * @return Размер массива
  */
-size_t getSize(char* message);
+size_t getSize(const char* message);
 
 /**
  * @brief Заполнение массива с клавиатуры
@@ -80,20 +80,20 @@ int** copyArray(int** arr, const size_t rows, const size_t columns);
 void replaceAbs(int** arr, const size_t rows, const size_t columns);
 
 /**
- * @brief Проверяет есть ли в столбце нулевой элемент
+ * @brief Проверяет, есть ли в столбце нулевой элемент
  * @param arr Массив
  * @param rows Количество строк массива
  * @param col Индекс столбца
- * @return 1 если в столбце есть нулевой элемент иначе 0
+ * @return 1, если в столбце есть нулевой элемент, иначе 0
  */
 int hasZeroInColumn(int** arr, const size_t rows, const size_t col);
 
 /**
- * @brief Вставляет первый столбец один раз после всех столбцов содержащих нулевой элемент
+ * @brief Вставляет первый столбец один раз после всех столбцов, содержащих нулевой элемент
  * @param arr Исходный массив
  * @param rows Количество строк массива
  * @param columns Количество столбцов исходного массива
- * @param newColumns Указатель на переменную в которую будет записано новое количество столбцов
+ * @param newColumns Указатель на переменную, в которую будет записано новое количество столбцов
  * @return Новый массив с выполненной вставкой
  */
 int** insertFirstColumnOnceAfterZeroColumns(int** arr, const size_t rows, const size_t columns, size_t* newColumns);
@@ -106,7 +106,7 @@ enum {RANDOM = 1, MANUAL};
 
 /**
  * @brief Точка входа в программу
- * @return 0 если программа выполнена корректно
+ * @return 0, если программа выполнена корректно
  */
 int main()
 {
@@ -135,21 +135,16 @@ int main()
     }
     printf("Original array:\n");
     printArray(arr, rows, columns);
-
-    // First task: replace minimum absolute values
     int** copyArr1 = copyArray(arr, rows, columns);
     replaceAbs(copyArr1, rows, columns);
     printf("Array after replacing minimum absolute values with zero:\n");
     printArray(copyArr1, rows, columns);
     freeArray(copyArr1, rows);
-
-    // Second task: insert first column once after all columns with zero elements
     size_t newCols;
     int** newArr = insertFirstColumnOnceAfterZeroColumns(arr, rows, columns, &newCols);
     printf("Array after inserting first column once after all columns with zero elements:\n");
     printArray(newArr, rows, newCols);
     freeArray(newArr, rows);
-
     freeArray(arr, rows);
     return 0;
 }
@@ -165,7 +160,7 @@ int Value()
     return value;
 }
 
-size_t getSize(char* message)
+size_t getSize(const char* message)
 {
     printf("%s", message);
     int value = Value();
@@ -303,7 +298,6 @@ int hasZeroInColumn(int** arr, const size_t rows, const size_t col) {
 }
 
 int** insertFirstColumnOnceAfterZeroColumns(int** arr, const size_t rows, const size_t columns, size_t* newColumns) {
-    // Check if there is at least one column with zero element
     int hasZeroColumn = 0;
     for (size_t j = 0; j < columns; j++) {
         if (hasZeroInColumn(arr, rows, j)) {
@@ -311,24 +305,20 @@ int** insertFirstColumnOnceAfterZeroColumns(int** arr, const size_t rows, const 
             break;
         }
     }
-
-    // Calculate new size: if there are columns with zeros, add one column
     *newColumns = columns + (hasZeroColumn ? 1 : 0);
     int** newArr = getArray(rows, *newColumns);
-
-    // Copy all columns of the original array
     for (size_t j = 0; j < columns; j++) {
         for (size_t i = 0; i < rows; i++) {
             newArr[i][j] = arr[i][j];
         }
     }
-
-    // If there are columns with zeros, add first column at the end
     if (hasZeroColumn) {
         for (size_t i = 0; i < rows; i++) {
             newArr[i][columns] = arr[i][0];
         }
     }
-
     return newArr;
+}
+    return newArr;
+
 }
