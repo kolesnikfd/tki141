@@ -5,6 +5,13 @@
 #define scanf_s scanf
 
 /**
+ * @brief Выделztn память для массива целых чисел
+ * @param size Размер массива
+ * @return Указатель на выделенную память
+ */
+int* createArray(const size_t size);
+
+/**
  * @brief Получение целочисленного значения от пользователя
  * @return Введенное значение
  */
@@ -15,7 +22,7 @@ int Value();
  * @param message сообщение пользователю
  * @return Размер массива
  */
-size_t getSize(char* message);
+size_t getSize(const char* message);
 
 /**
  * @brief Заполнение массива с клавиатуры
@@ -76,12 +83,7 @@ int main()
 {
     srand(time(NULL));
     size_t size = getSize("Enter array size: ");
-    int* arr = malloc(size * sizeof(int));
-    if (arr == NULL)
-    {
-        printf("Memory allocation error!\n");
-        exit(1);
-    }
+    int* arr = createArray(size);
     
     printf("Choose array filling method:\n" "%d - random numbers, %d - manually: ", RANDOM, MANUAL);
     int choice = Value();
@@ -105,13 +107,7 @@ int main()
     int sum = sumSingleDigit(arr, size);
     printf("\n1. Sum of single-digit elements: %d\n", sum);
     
-    int* arrCopy = malloc(size * sizeof(int));
-    if (arrCopy == NULL)
-    {
-        printf("Memory allocation error!\n");
-        free(arr);
-        exit(1);
-    }
+    int* arrCopy = createArray(size);
     for (size_t i = 0; i < size; i++)
     {
         arrCopy[i] = arr[i];
@@ -125,14 +121,12 @@ int main()
     int pairIndex = findLastPair(arrCopy, size, number);
     if (pairIndex != -1)
     {
-        printf("Last pair of adjacent elements with same signs,\n");
-        printf("whose product is less than %d: elements [%d] and [%d]\n", number, pairIndex, pairIndex + 1);
+        printf("Last pair of adjacent elements with same signs, whose product is less than %d: elements [%d] and [%d]\n", number, pairIndex, pairIndex + 1);
         printf("Values: %d and %d, product: %d\n", arrCopy[pairIndex], arrCopy[pairIndex + 1], arrCopy[pairIndex] * arrCopy[pairIndex + 1]);
     }
     else
     {
-        printf("Pair of adjacent elements with same signs,\n");
-        printf("whose product is less than %d, was not found.\n", number);
+        printf("Pair of adjacent elements with same signs, whose product is less than %d, was not found.\n", number);
     }
     free(arr);
     free(arrCopy);
@@ -150,7 +144,7 @@ int Value()
     return value;
 }
 
-size_t getSize(char* message)
+size_t getSize(const char* message)
 {
     printf("%s", message);
     int value = Value();
@@ -285,4 +279,18 @@ int findLastPair(const int* arr, const size_t size, const int number)
         }
     }
     return lastFoundIndex;
+}
+
+int* createArray(const size_t size)
+{
+    int* arr = malloc(size * sizeof(int));
+    if (arr == NULL)
+    {
+        printf("Memory allocation error!\n");
+        exit(1);
+    }
+    return arr;
+}
+    return lastFoundIndex;
+
 }
