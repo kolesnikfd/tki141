@@ -4,6 +4,13 @@
 #define scanf_s scanf
 
 /**
+ * @brief Выделztn память для массива целых чисел
+ * @param size Размер массива
+ * @return Указатель на выделенную память
+ */
+int* createArray(const size_t size);
+
+/**
  * @brief Считывает значение введенное с клавиатуры с проверкой ввода
  * @return Считанное значение
  */
@@ -14,7 +21,7 @@ int Value(void);
  * @param message сообщение пользователю
  * @return Размер массива
  */
-size_t getSize(char* message);
+size_t getSize(const char* message);
 
 /**
  * @brief Заполнение массива с клавиатуры
@@ -66,7 +73,7 @@ int replaceLastMultipleOfThree(int* copyArr, const size_t size);
  * @param size Размер массива
  * @return Указатель на новый массив и его размер через параметры
  */
-int* insertKAfterEvenSimple(const int* arr, const size_t size, size_t* newSize);
+int* insertKAfterLastEven(const int* arr, const size_t size, size_t* newSize);
 
 /**
  * @brief Формирует новый массив М из массива Р по правилу
@@ -83,6 +90,14 @@ int* createMFromP(const int* P, const size_t size);
 enum {RANDOM = 1, MANUAL};
 
 /**
+ * @brief Находит индекс последнего четного лемента массива 
+ * @param arr Указатель на массив
+ * @param size Размер массива
+ * @return индекс последнего четного элемента массива, если нет - то -1
+ */
+getLastEvenIndex(const int* arr, const size_t size);
+
+/**
  * @brief Точка входа в программу
  * @return 0 если программа выполнена корректно
  */
@@ -90,12 +105,7 @@ int main(void)
 {
     srand(time(NULL));
     size_t size = getSize("Enter array size: ");
-    int* arr = malloc(size * sizeof(int));
-    if (arr == NULL)
-    {
-        printf("Memory allocation error!\n");
-        exit(1);
-    }
+    int* arr = createArray(size);
     printf("Select the method for filling the array:\n"
            "%d - random numbers\n"
            "%d - manually\n"
@@ -132,8 +142,8 @@ int main(void)
     free(copyArr1);
     
     printf("\n2.Inserting a number K after all even elements:\n");
-    size_t newSize;
-    int* arr2 = insertKAfterEvenSimple(arr, size, &newSize);
+    size_t newSize = 0;
+    int* arr2 = insertKAfterLastEven(arr, size, &newSize);
     if (arr2 != NULL)
     {
         printf("Result (new size: %zu): ", newSize);
@@ -162,7 +172,7 @@ int Value(void)
     return value;
 }
 
-size_t getSize(char* message)
+size_t getSize(const char* message)
 {
     printf("%s", message);
     int value = Value();
@@ -216,12 +226,7 @@ void fillRandom(int* arr, const size_t size)
 
 int* copyArray(const int* arr, const size_t size)
 {
-    int* copyArr = malloc(sizeof(int) * size);
-    if (copyArr == NULL)
-    {
-        printf("Memory allocation error!\n");
-        exit(1);
-    }
+    int* copyArr = createArray(size);
     for (size_t i = 0; i < size; i++)
     {
         copyArr[i] = arr[i];
@@ -252,38 +257,34 @@ int replaceLastMultipleOfThree(int* copyArr, const size_t size)
     return 0;
 }
 
-int* insertKAfterEvenSimple(const int* arr, const size_t size, size_t* newSize)
+int* insertKAfterLastEven(const int* arr, const size_t size, size_t* newSize)
 {
-    printf("Enter value K: ");
+    printf("Enter K: ");
     int K = Value();
-    
-    // Считаем количество четных элементов
-    size_t evenCount = 0;
-    for (size_t i = 0; i < size; i++)
+    int lastEvenIndex = getLastEvenIndex(arr, size);
+    *newSize = size;
+    if (lastEvenIndex != -1) {
+        *newSize = size + 1;
+    }
+    int* newArr = createArray(*newSize);
+    if (lastEvenIndex == -1)
     {
-        if (arr[i] % 2 == 0)
+        printf("No even elements were found.\n");
+        for (size_t i = 0; i < size; i++)
         {
-            evenCount++;
+            newArr[i] = arr[i];
         }
     }
-    
-    // Создаем новый массив
-    *newSize = size + evenCount;
-    int* newArr = malloc(*newSize * sizeof(int));
-    if (newArr == NULL)
+    else
     {
-        printf("Memory allocation error!\n");
-        return NULL;
-    }
-    
-    // Заполняем новый массив
-    size_t j = 0;
-    for (size_t i = 0; i < size; i++)
-    {
-        newArr[j++] = arr[i];
-        if (arr[i] % 2 == 0)
+        for (size_t i = 0; i <= (size_t)lastEvenIndex; i++)
         {
-            newArr[j++] = K;
+            newArr[i] = arr[i];
+        }
+        newArr[lastEvenIndex + 1] = K;
+        for (size_t i = lastEvenIndex + 1; i < size; i++)
+        {
+            newArr[i + 1] = arr[i];
         }
     }
     
@@ -292,13 +293,7 @@ int* insertKAfterEvenSimple(const int* arr, const size_t size, size_t* newSize)
 
 int* createMFromP(const int* P, const size_t size)
 {
-    int* M = malloc(size * sizeof(int));
-    if (M == NULL)
-    {
-        printf("Memory allocation error!\n");
-        exit(1);
-    }
-    
+    int* M = createArray(size);
     for (size_t i = 0; i < size; i++)
     {
         if (i == 0 || i == size - 1)
@@ -314,6 +309,35 @@ int* createMFromP(const int* P, const size_t size)
             M[i] = -P[i] * (int)(i + 1);
         }
     }
+    return M;
+}
+
+int* createArray(const size_t size)
+{
+    int* arr = malloc(size * sizeof(int));
+    if (arr == NULL)
+    {
+        printf("Memory allocation error!\n");
+        exit(1);
+    }
+    return arr;
+}
+
+getLastEvenIndex(const int* arr, const size_t size)
+{
+    int lastEvenIndex = -1;
+    for (int i = size - 1; i >= 0; i--)
+    {
+        if (arr[i] % 2 == 0)
+        {
+            lastEvenIndex = i;
+            break;
+        }
+    }
+    return lastEvenIndex;
+}
+    }
     
     return M;
+
 }
