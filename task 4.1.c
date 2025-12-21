@@ -81,7 +81,6 @@ enum {RANDOM = 1, MANUAL};
  */
 int main()
 {
-    srand(time(NULL));
     size_t size = getSize("Enter array size: ");
     int* arr = createArray(size);
     
@@ -167,6 +166,7 @@ void fillArray(int* arr,const size_t size)
 
 void fillRandom(int* arr,const size_t size)
 {
+    srand(time(NULL));
     for (size_t i = 0; i < size; i++)
     {
         arr[i] = (rand() % 201) - 100;
@@ -220,7 +220,8 @@ void reverseBetweenMinMax(int* arr, const size_t size)
             maxIndex = i;
         }
     }
-    size_t start, end;
+    size_t start = 0; 
+    size_t end = 0;
     if (minIndex < maxIndex)
     {
         start = minIndex + 1;
@@ -271,7 +272,7 @@ int findLastPair(const int* arr, const size_t size, const int number)
         }
         if (sameSign)
         {
-            long long product = (long long)current * (long long)next;
+            int product = current * next;
             if (product < number)
             {
                 lastFoundIndex = i;
@@ -290,7 +291,4 @@ int* createArray(const size_t size)
         exit(1);
     }
     return arr;
-}
-    return lastFoundIndex;
-
 }
