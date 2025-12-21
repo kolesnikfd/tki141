@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #define scanf_s scanf
 
 /**
@@ -95,7 +96,7 @@ enum {RANDOM = 1, MANUAL};
  * @param size Размер массива
  * @return индекс последнего четного элемента массива, если нет - то -1
  */
-getLastEvenIndex(const int* arr, const size_t size);
+int getLastEvenIndex(const int* arr, const size_t size);
 
 /**
  * @brief Точка входа в программу
@@ -237,7 +238,7 @@ int* copyArray(const int* arr, const size_t size)
 int replaceLastMultipleOfThree(int* copyArr, const size_t size)
 {
     int found = 0;
-    size_t lastIndex = -1;
+    int lastIndex = -1;
 
     for (size_t i = 0; i < size; i++)
     {
@@ -263,7 +264,8 @@ int* insertKAfterLastEven(const int* arr, const size_t size, size_t* newSize)
     int K = Value();
     int lastEvenIndex = getLastEvenIndex(arr, size);
     *newSize = size;
-    if (lastEvenIndex != -1) {
+    if (lastEvenIndex != -1) 
+    {
         *newSize = size + 1;
     }
     int* newArr = createArray(*newSize);
@@ -323,7 +325,7 @@ int* createArray(const size_t size)
     return arr;
 }
 
-getLastEvenIndex(const int* arr, const size_t size)
+int getLastEvenIndex(const int* arr, const size_t size)
 {
     int lastEvenIndex = -1;
     for (int i = size - 1; i >= 0; i--)
@@ -335,9 +337,4 @@ getLastEvenIndex(const int* arr, const size_t size)
         }
     }
     return lastEvenIndex;
-}
-    }
-    
-    return M;
-
 }
