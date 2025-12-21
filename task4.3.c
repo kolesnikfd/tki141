@@ -131,7 +131,7 @@ int main()
         default:
             printf("Error!\n");
             freeArray(arr, rows);
-            return 0;
+            exit(1);
     }
     printf("Original array:\n");
     printArray(arr, rows, columns);
@@ -155,7 +155,7 @@ int Value()
     if (!scanf_s("%d", &value))
     {
         printf("Error!\n");
-        abort();
+        exit(1);
     }
     return value;
 }
@@ -167,7 +167,7 @@ size_t getSize(const char* message)
     if (value <= 0)
     {
         printf("Error!");
-        abort();
+        exit(1);
     }
     return (size_t)value;
 }
@@ -288,9 +288,12 @@ void replaceAbs(int** arr, const size_t rows, const size_t columns)
     }
 }
 
-int hasZeroInColumn(int** arr, const size_t rows, const size_t col) {
-    for (size_t i = 0; i < rows; i++) {
-        if (arr[i][col] == 0) {
+int hasZeroInColumn(int** arr, const size_t rows, const size_t col)
+{
+    for (size_t i = 0; i < rows; i++)
+    {
+        if (arr[i][col] == 0)
+        {
             return 1;
         }
     }
@@ -298,27 +301,50 @@ int hasZeroInColumn(int** arr, const size_t rows, const size_t col) {
 }
 
 int** insertFirstColumnOnceAfterZeroColumns(int** arr, const size_t rows, const size_t columns, size_t* newColumns) {
-    int hasZeroColumn = 0;
-    for (size_t j = 0; j < columns; j++) {
-        if (hasZeroInColumn(arr, rows, j)) {
-            hasZeroColumn = 1;
-            break;
+    int lastZeroColumnIndex = -1;
+    for (size_t j = 0; j < columns; j++)
+    {
+        for (size_t i = 0; i < rows; i++)
+        {
+            if (arr[i][j] == 0)
+            {
+                lastZeroColumnIndex = j;
+                break;
+            }
         }
     }
-    *newColumns = columns + (hasZeroColumn ? 1 : 0);
+    if (lastZeroColumnIndex == -1)
+    {
+        *newColumns = columns;
+        int** newArr = getArray(rows, *newColumns);
+        for (size_t j = 0; j < columns; j++)
+        {
+            for (size_t i = 0; i < rows; i++)
+            {
+                newArr[i][j] = arr[i][j];
+            }
+        }
+        return newArr;
+    }
+    *newColumns = columns + 1;
     int** newArr = getArray(rows, *newColumns);
-    for (size_t j = 0; j < columns; j++) {
-        for (size_t i = 0; i < rows; i++) {
+    for (size_t j = 0; j <= lastZeroColumnIndex; j++)
+    {
+        for (size_t i = 0; i < rows; i++)
+        {
             newArr[i][j] = arr[i][j];
         }
     }
-    if (hasZeroColumn) {
+    size_t insertPosition = lastZeroColumnIndex + 1;
+    for (size_t i = 0; i < rows; i++)
+    {
+        newArr[i][insertPosition] = arr[i][0];
+    }
+    for (size_t j = lastZeroColumnIndex + 1; j < columns; j++)
+    {
         for (size_t i = 0; i < rows; i++) {
-            newArr[i][columns] = arr[i][0];
+            newArr[i][j + 1] = arr[i][j];
         }
     }
     return newArr;
-}
-    return newArr;
-
 }
